@@ -342,3 +342,179 @@ def denormalize_observations(
         np.float32,
         copy=False,
     )
+
+def compute_state_normalization_stats(
+    train_states: np.ndarray,
+) -> dict[str, np.ndarray]:
+    """
+    Compute feature-wise normalization statistics
+    from TRAINING TRUTH ONLY.
+
+    Expected shape:
+        (trajectories, time, 40)
+    """
+    states = np.asarray(
+        train_states,
+        dtype=np.float64,
+    )
+
+    if states.ndim != 3:
+        raise ValueError(
+            "train_states must have shape "
+            "(trajectories, time, 40)."
+        )
+
+    if states.shape[-1] != 40:
+        raise ValueError(
+            f"Expected 40 state variables, received "
+            f"{states.shape[-1]}."
+        )
+
+    if not np.all(np.isfinite(states)):
+        raise ValueError(
+            "train_states contains NaN or Inf."
+        )
+
+    flattened = states.reshape(
+        -1,
+        states.shape[-1],
+    )
+
+    mean = np.mean(
+        flattened,
+        axis=0,
+    )
+
+    std = np.std(
+        flattened,
+        axis=0,
+        ddof=0,
+    )
+
+    if not np.all(np.isfinite(mean)):
+        raise ValueError(
+            "State mean contains NaN or Inf."
+        )
+
+    if not np.all(np.isfinite(std)):
+        raise ValueError(
+            "State std contains NaN or Inf."
+        )
+
+    if np.any(std <= 0.0):
+        raise ValueError(
+            "All state standard deviations "
+            "must be positive."
+        )
+
+    return {
+        "mean": mean.astype(np.float32),
+        "std": std.astype(np.float32),
+    }
+
+
+def normalize_states(
+    states: np.ndarray,
+    mean: np.ndarray,
+    std: np.ndarray,
+) -> np.ndarray:
+    """
+    Normalize Lorenz-96 states using training
+    statistics.
+    """
+    states = np.asarray(
+        states,
+        dtype=np.float32,
+    )
+
+    mean = np.asarray(
+        mean,
+        dtype=np.float32,
+    )
+
+    std = np.asarray(
+        std,
+        dtype=np.float32,
+    )
+
+    if states.shape[-1] != 40:
+        raise ValueError(
+            "Expected state dimension 40."
+        )
+
+    if mean.shape != (40,):
+        raise ValueError(
+            "State mean must have shape (40,)."
+        )
+
+    if std.shape != (40,):
+        raise ValueError(
+            "State std must have shape (40,)."
+        )
+
+    if np.any(std <= 0.0):
+        raise ValueError(
+            "State standard deviations must "
+            "be positive."
+        )
+
+    normalized = (
+        states - mean
+    ) / std
+
+    if not np.all(np.isfinite(normalized)):
+        raise ValueError(
+            "State normalization produced "
+            "NaN or Inf."
+        )
+
+    return normalized.astype(
+        np.float32,
+        copy=False,
+    )
+
+
+def denormalize_states(
+    normalized_states: np.ndarray,
+    mean: np.ndarray,
+    std: np.ndarray,
+) -> np.ndarray:
+    """
+    Convert normalized Lorenz-96 states back
+    to original physical scale.
+    """
+    normalized_states = np.asarray(
+        normalized_states,
+        dtype=np.float32,
+    )
+
+    mean = np.asarray(
+        mean,
+        dtype=np.float32,
+    )
+
+    std = np.asarray(
+        std,
+        dtype=np.float32,
+    )
+
+    if normalized_states.shape[-1] != 40:
+        raise ValueError(
+            "Expected state dimension 40."
+        )
+
+    restored = (
+        normalized_states * std
+        + mean
+    )
+
+    if not np.all(np.isfinite(restored)):
+        raise ValueError(
+            "State denormalization produced "
+            "NaN or Inf."
+        )
+
+    return restored.astype(
+        np.float32,
+        copy=False,
+    )
