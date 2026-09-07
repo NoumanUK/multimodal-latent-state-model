@@ -223,10 +223,14 @@ def figure_05_temporal_improvement(df: pd.DataFrame) -> None:
     clean_axis(ax, grid_axis="x")
 
     for bar, value in zip(bars, values):
+    # Put the annotation beyond the outer end of the bar.
+    # For positive bars this is on the right.
+    # For negative bars this is also placed on the right side
+    # of the bar, preventing collision with the y-axis label.
         if value >= 0:
             x_text, ha = value + 0.9, "left"
         else:
-            x_text, ha = value - 0.9, "right"
+            x_text, ha = 0.9, "left"
 
         ax.text(
             x_text,
