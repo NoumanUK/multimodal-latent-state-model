@@ -1,0 +1,1342 @@
+[
+    {
+        "epoch": 1,
+        "beta": 0.0002,
+        "condition": {
+            "noise": 0.0,
+            "missing": 0.5,
+            "modalities": "A"
+        },
+        "train": {
+            "total": 0.810615313606106,
+            "reconstruction": 0.8096549123061207,
+            "kl": 4.802008044571948
+        },
+        "validation": {
+            "total": 0.629216917047399,
+            "reconstruction": 0.6273660783091919,
+            "kl": 9.254190053412419
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 2,
+        "beta": 0.0004,
+        "condition": {
+            "noise": 0.05,
+            "missing": 0.1,
+            "modalities": "C"
+        },
+        "train": {
+            "total": 0.7148254702037129,
+            "reconstruction": 0.7124541415117215,
+            "kl": 5.928322239493066
+        },
+        "validation": {
+            "total": 1.2265692726521047,
+            "reconstruction": 1.2232998332012814,
+            "kl": 8.173599990684732
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 3,
+        "beta": 0.0006,
+        "condition": {
+            "noise": 0.0,
+            "missing": 0.3,
+            "modalities": "AB"
+        },
+        "train": {
+            "total": 0.5974460476108536,
+            "reconstruction": 0.5947999132831278,
+            "kl": 4.410223639155675
+        },
+        "validation": {
+            "total": 1.0664323287850483,
+            "reconstruction": 1.063082779832808,
+            "kl": 5.582584579257459
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 4,
+        "beta": 0.0008,
+        "condition": {
+            "noise": 0.0,
+            "missing": 0.3,
+            "modalities": "C"
+        },
+        "train": {
+            "total": 0.7017558622750768,
+            "reconstruction": 0.6982591935272725,
+            "kl": 4.37083683427956
+        },
+        "validation": {
+            "total": 0.6339454124104084,
+            "reconstruction": 0.6295438178053729,
+            "kl": 5.501996174097344
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 5,
+        "beta": 0.001,
+        "condition": {
+            "noise": 0.1,
+            "missing": 0.5,
+            "modalities": "B"
+        },
+        "train": {
+            "total": 0.7452290715130635,
+            "reconstruction": 0.7416799945961594,
+            "kl": 3.5490771591417114
+        },
+        "validation": {
+            "total": 0.7306986450342565,
+            "reconstruction": 0.7253289427225831,
+            "kl": 5.369702587840562
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 6,
+        "beta": 0.0012,
+        "condition": {
+            "noise": 0.2,
+            "missing": 0.3,
+            "modalities": "ABC"
+        },
+        "train": {
+            "total": 0.513177666361629,
+            "reconstruction": 0.508842339796148,
+            "kl": 3.6127726845873642
+        },
+        "validation": {
+            "total": 0.38366436476072807,
+            "reconstruction": 0.3791160795988215,
+            "kl": 3.7902376097590915
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 7,
+        "beta": 0.0014000000000000002,
+        "condition": {
+            "noise": 0.2,
+            "missing": 0.1,
+            "modalities": "BC"
+        },
+        "train": {
+            "total": 0.4480680328975201,
+            "reconstruction": 0.4427937585914222,
+            "kl": 3.767338917132192
+        },
+        "validation": {
+            "total": 0.3843387100018363,
+            "reconstruction": 0.3788253002394159,
+            "kl": 3.938149683120266
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 8,
+        "beta": 0.0016,
+        "condition": {
+            "noise": 0.05,
+            "missing": 0.0,
+            "modalities": "C"
+        },
+        "train": {
+            "total": 0.5901164824905417,
+            "reconstruction": 0.5841064953662316,
+            "kl": 3.7562412164777554
+        },
+        "validation": {
+            "total": 0.7040256092819731,
+            "reconstruction": 0.6980352283431334,
+            "kl": 3.7439880195938953
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 9,
+        "beta": 0.0018,
+        "condition": {
+            "noise": 0.2,
+            "missing": 0.3,
+            "modalities": "AC"
+        },
+        "train": {
+            "total": 0.5364916470894617,
+            "reconstruction": 0.5308854099554524,
+            "kl": 3.1145766297189916
+        },
+        "validation": {
+            "total": 0.4195723539638213,
+            "reconstruction": 0.41201999637049586,
+            "kl": 4.195754249846292
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 10,
+        "beta": 0.002,
+        "condition": {
+            "noise": 0.2,
+            "missing": 0.3,
+            "modalities": "BC"
+        },
+        "train": {
+            "total": 0.527922976860285,
+            "reconstruction": 0.5214743290537983,
+            "kl": 3.224324053014855
+        },
+        "validation": {
+            "total": 0.37037581903326033,
+            "reconstruction": 0.36260429745435757,
+            "kl": 3.885760631574182
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 11,
+        "beta": 0.0022,
+        "condition": {
+            "noise": 0.05,
+            "missing": 0.0,
+            "modalities": "ABC"
+        },
+        "train": {
+            "total": 0.31112670330385406,
+            "reconstruction": 0.3021388660948147,
+            "kl": 4.085380526833874
+        },
+        "validation": {
+            "total": 0.3018043385198349,
+            "reconstruction": 0.2930197361931671,
+            "kl": 3.993001332388661
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 12,
+        "beta": 0.0024,
+        "condition": {
+            "noise": 0.1,
+            "missing": 0.5,
+            "modalities": "ABC"
+        },
+        "train": {
+            "total": 0.518886890882788,
+            "reconstruction": 0.511741586976391,
+            "kl": 2.9772099943016546
+        },
+        "validation": {
+            "total": 0.36255383264306795,
+            "reconstruction": 0.35375104820931924,
+            "kl": 3.667826541974503
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 13,
+        "beta": 0.0026,
+        "condition": {
+            "noise": 0.2,
+            "missing": 0.5,
+            "modalities": "AB"
+        },
+        "train": {
+            "total": 0.6118768289053432,
+            "reconstruction": 0.6041060484932274,
+            "kl": 2.9887611653171104
+        },
+        "validation": {
+            "total": 0.37485779575460476,
+            "reconstruction": 0.3655155058149434,
+            "kl": 3.5931885676962176
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 14,
+        "beta": 0.0028000000000000004,
+        "condition": {
+            "noise": 0.1,
+            "missing": 0.0,
+            "modalities": "B"
+        },
+        "train": {
+            "total": 0.5303345331447906,
+            "reconstruction": 0.5213150906352848,
+            "kl": 3.2212294473487018
+        },
+        "validation": {
+            "total": 0.5295309937879275,
+            "reconstruction": 0.519246241091956,
+            "kl": 3.673126998682343
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 15,
+        "beta": 0.003,
+        "condition": {
+            "noise": 0.1,
+            "missing": 0.1,
+            "modalities": "ABC"
+        },
+        "train": {
+            "total": 0.3508337978194518,
+            "reconstruction": 0.3406063032066458,
+            "kl": 3.409164752536488
+        },
+        "validation": {
+            "total": 0.2999989421087817,
+            "reconstruction": 0.2896002292663297,
+            "kl": 3.466237623591159
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 16,
+        "beta": 0.0032,
+        "condition": {
+            "noise": 0.2,
+            "missing": 0.1,
+            "modalities": "C"
+        },
+        "train": {
+            "total": 0.6774281593693454,
+            "reconstruction": 0.6687323543959237,
+            "kl": 2.7174391232012423
+        },
+        "validation": {
+            "total": 0.5571516800184813,
+            "reconstruction": 0.5462836632385041,
+            "kl": 3.396255101589872
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 17,
+        "beta": 0.0034000000000000002,
+        "condition": {
+            "noise": 0.1,
+            "missing": 0.5,
+            "modalities": "B"
+        },
+        "train": {
+            "total": 0.7318483607357911,
+            "reconstruction": 0.7229589013247384,
+            "kl": 2.614546814038804
+        },
+        "validation": {
+            "total": 0.525488645579233,
+            "reconstruction": 0.5132905839674166,
+            "kl": 3.5876651257402536
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 18,
+        "beta": 0.0036,
+        "condition": {
+            "noise": 0.0,
+            "missing": 0.1,
+            "modalities": "BC"
+        },
+        "train": {
+            "total": 0.4001876482563865,
+            "reconstruction": 0.3887428791490838,
+            "kl": 3.1791025877845644
+        },
+        "validation": {
+            "total": 0.42843913533311395,
+            "reconstruction": 0.4158550278055432,
+            "kl": 3.4955853265532983
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 19,
+        "beta": 0.0038,
+        "condition": {
+            "noise": 0.05,
+            "missing": 0.0,
+            "modalities": "BC"
+        },
+        "train": {
+            "total": 0.31599788599328094,
+            "reconstruction": 0.3034204872594395,
+            "kl": 3.3098416672276874
+        },
+        "validation": {
+            "total": 0.39173988321096426,
+            "reconstruction": 0.37835621020524973,
+            "kl": 3.522018791095831
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 20,
+        "beta": 0.004,
+        "condition": {
+            "noise": 0.0,
+            "missing": 0.3,
+            "modalities": "A"
+        },
+        "train": {
+            "total": 0.666255007280408,
+            "reconstruction": 0.6553325399597667,
+            "kl": 2.7306165703554175
+        },
+        "validation": {
+            "total": 0.4602042551988598,
+            "reconstruction": 0.44667721280042805,
+            "kl": 3.38176042875138
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 21,
+        "beta": 0.0042,
+        "condition": {
+            "noise": 0.2,
+            "missing": 0.3,
+            "modalities": "AC"
+        },
+        "train": {
+            "total": 0.4981763360797905,
+            "reconstruction": 0.48611199119699827,
+            "kl": 2.8724632971509863
+        },
+        "validation": {
+            "total": 0.5045000861708372,
+            "reconstruction": 0.4898105140105734,
+            "kl": 3.497517307434069
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 22,
+        "beta": 0.0044,
+        "condition": {
+            "noise": 0.2,
+            "missing": 0.1,
+            "modalities": "AC"
+        },
+        "train": {
+            "total": 0.38347254561852606,
+            "reconstruction": 0.37023620494657766,
+            "kl": 3.008259251719585
+        },
+        "validation": {
+            "total": 0.5022273718070888,
+            "reconstruction": 0.486843159148158,
+            "kl": 3.496412578573409
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 23,
+        "beta": 0.0046,
+        "condition": {
+            "noise": 0.2,
+            "missing": 0.1,
+            "modalities": "ABC"
+        },
+        "train": {
+            "total": 0.3452764770444981,
+            "reconstruction": 0.3311658173771434,
+            "kl": 3.0675347654406657
+        },
+        "validation": {
+            "total": 0.29465952864077094,
+            "reconstruction": 0.28024523839740084,
+            "kl": 3.133541220778361
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 24,
+        "beta": 0.0048,
+        "condition": {
+            "noise": 0.05,
+            "missing": 0.5,
+            "modalities": "AB"
+        },
+        "train": {
+            "total": 0.5940134689852302,
+            "reconstruction": 0.5807109595770731,
+            "kl": 2.771356121833803
+        },
+        "validation": {
+            "total": 0.354447402733142,
+            "reconstruction": 0.3385950935878831,
+            "kl": 3.3025643154346214
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 25,
+        "beta": 0.005,
+        "condition": {
+            "noise": 0.05,
+            "missing": 0.0,
+            "modalities": "A"
+        },
+        "train": {
+            "total": 0.5168940556216104,
+            "reconstruction": 0.5023229321695077,
+            "kl": 2.9142246910633536
+        },
+        "validation": {
+            "total": 0.4383204160820464,
+            "reconstruction": 0.42177986525227207,
+            "kl": 3.30810999028396
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 26,
+        "beta": 0.0052,
+        "condition": {
+            "noise": 0.05,
+            "missing": 0.1,
+            "modalities": "AB"
+        },
+        "train": {
+            "total": 0.36798474500557216,
+            "reconstruction": 0.35219241947793195,
+            "kl": 3.0369856844296046
+        },
+        "validation": {
+            "total": 0.3409122739188183,
+            "reconstruction": 0.324577174144571,
+            "kl": 3.1413656406912245
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 27,
+        "beta": 0.0054,
+        "condition": {
+            "noise": 0.1,
+            "missing": 0.3,
+            "modalities": "C"
+        },
+        "train": {
+            "total": 0.7105116325564563,
+            "reconstruction": 0.6967409350651368,
+            "kl": 2.550128965034963
+        },
+        "validation": {
+            "total": 0.4920991727286903,
+            "reconstruction": 0.47501600227157575,
+            "kl": 3.163549886240928
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 28,
+        "beta": 0.005600000000000001,
+        "condition": {
+            "noise": 0.05,
+            "missing": 0.0,
+            "modalities": "B"
+        },
+        "train": {
+            "total": 0.5155851753378222,
+            "reconstruction": 0.5003863982975617,
+            "kl": 2.7140674530651947
+        },
+        "validation": {
+            "total": 0.6041881022932323,
+            "reconstruction": 0.5867307670604713,
+            "kl": 3.117381741442939
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 29,
+        "beta": 0.0058,
+        "condition": {
+            "noise": 0.1,
+            "missing": 0.3,
+            "modalities": "ABC"
+        },
+        "train": {
+            "total": 0.42957107557493196,
+            "reconstruction": 0.41294324762874596,
+            "kl": 2.8668670332672854
+        },
+        "validation": {
+            "total": 0.3171917799743686,
+            "reconstruction": 0.2991951477067958,
+            "kl": 3.102867709427099
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 30,
+        "beta": 0.006,
+        "condition": {
+            "noise": 0.05,
+            "missing": 0.5,
+            "modalities": "B"
+        },
+        "train": {
+            "total": 0.7240345966714857,
+            "reconstruction": 0.709666776566382,
+            "kl": 2.3946367718512107
+        },
+        "validation": {
+            "total": 0.5188813816204745,
+            "reconstruction": 0.4996376373613423,
+            "kl": 3.207290470331993
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 31,
+        "beta": 0.0062,
+        "condition": {
+            "noise": 0.05,
+            "missing": 0.5,
+            "modalities": "B"
+        },
+        "train": {
+            "total": 0.7084083237276134,
+            "reconstruction": 0.6933050459317904,
+            "kl": 2.4360124386522473
+        },
+        "validation": {
+            "total": 0.5438387153647826,
+            "reconstruction": 0.5238193346575878,
+            "kl": 3.228932244761954
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 32,
+        "beta": 0.0064,
+        "condition": {
+            "noise": 0.05,
+            "missing": 0.5,
+            "modalities": "AC"
+        },
+        "train": {
+            "total": 0.5849221997764946,
+            "reconstruction": 0.5686248531330839,
+            "kl": 2.5464606846572093
+        },
+        "validation": {
+            "total": 0.4020156875905421,
+            "reconstruction": 0.38122254217737483,
+            "kl": 3.2489291199326575
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 33,
+        "beta": 0.0066,
+        "condition": {
+            "noise": 0.0,
+            "missing": 0.3,
+            "modalities": "A"
+        },
+        "train": {
+            "total": 0.6434420961396041,
+            "reconstruction": 0.6270639347539325,
+            "kl": 2.4815396782798405
+        },
+        "validation": {
+            "total": 0.5048180294061058,
+            "reconstruction": 0.4835091988044041,
+            "kl": 3.22861092450674
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 34,
+        "beta": 0.0068000000000000005,
+        "condition": {
+            "noise": 0.0,
+            "missing": 0.5,
+            "modalities": "AB"
+        },
+        "train": {
+            "total": 0.5908099663139228,
+            "reconstruction": 0.5729749853234105,
+            "kl": 2.6227911733221023
+        },
+        "validation": {
+            "total": 0.3753630634191253,
+            "reconstruction": 0.35357891594357604,
+            "kl": 3.203551131578623
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 35,
+        "beta": 0.007000000000000001,
+        "condition": {
+            "noise": 0.2,
+            "missing": 0.0,
+            "modalities": "B"
+        },
+        "train": {
+            "total": 0.5135856206835098,
+            "reconstruction": 0.4954417355749031,
+            "kl": 2.591983330712039
+        },
+        "validation": {
+            "total": 0.5603639950107927,
+            "reconstruction": 0.5387396666889926,
+            "kl": 3.0891892901213667
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 36,
+        "beta": 0.0072,
+        "condition": {
+            "noise": 0.2,
+            "missing": 0.5,
+            "modalities": "A"
+        },
+        "train": {
+            "total": 0.7490338585735655,
+            "reconstruction": 0.7327573128167189,
+            "kl": 2.2606315663562975
+        },
+        "validation": {
+            "total": 0.538082996072774,
+            "reconstruction": 0.5165491228899576,
+            "kl": 2.9908158796724282
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 37,
+        "beta": 0.0074,
+        "condition": {
+            "noise": 0.05,
+            "missing": 0.3,
+            "modalities": "AB"
+        },
+        "train": {
+            "total": 0.4836006514869013,
+            "reconstruction": 0.4635742044430708,
+            "kl": 2.706276567505695
+        },
+        "validation": {
+            "total": 0.39756154488150325,
+            "reconstruction": 0.37477327513448805,
+            "kl": 3.0794959594407865
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 38,
+        "beta": 0.0076,
+        "condition": {
+            "noise": 0.2,
+            "missing": 0.3,
+            "modalities": "BC"
+        },
+        "train": {
+            "total": 0.527607084185505,
+            "reconstruction": 0.5082198629485029,
+            "kl": 2.550950074944106
+        },
+        "validation": {
+            "total": 0.43676492074671763,
+            "reconstruction": 0.4134708345873836,
+            "kl": 3.065011254393992
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 39,
+        "beta": 0.0078000000000000005,
+        "condition": {
+            "noise": 0.1,
+            "missing": 0.3,
+            "modalities": "ABC"
+        },
+        "train": {
+            "total": 0.4082860955520152,
+            "reconstruction": 0.3875345832879728,
+            "kl": 2.6604502971028734
+        },
+        "validation": {
+            "total": 0.31552885125055546,
+            "reconstruction": 0.29258981356357894,
+            "kl": 2.9409021487317473
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 40,
+        "beta": 0.008,
+        "condition": {
+            "noise": 0.0,
+            "missing": 0.0,
+            "modalities": "ABC"
+        },
+        "train": {
+            "total": 0.2871207618830886,
+            "reconstruction": 0.26471868285003014,
+            "kl": 2.8002597144127512
+        },
+        "validation": {
+            "total": 0.286312555314199,
+            "reconstruction": 0.264090260858768,
+            "kl": 2.7777867912822782
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 41,
+        "beta": 0.0082,
+        "condition": {
+            "noise": 0.05,
+            "missing": 0.3,
+            "modalities": "A"
+        },
+        "train": {
+            "total": 0.6479551212661654,
+            "reconstruction": 0.6287613765445319,
+            "kl": 2.340700779654474
+        },
+        "validation": {
+            "total": 0.45063472436140906,
+            "reconstruction": 0.4276026299081235,
+            "kl": 2.8087919764887275
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 42,
+        "beta": 0.0084,
+        "condition": {
+            "noise": 0.05,
+            "missing": 0.5,
+            "modalities": "BC"
+        },
+        "train": {
+            "total": 0.6116770606771227,
+            "reconstruction": 0.5918669877911492,
+            "kl": 2.3583422151192157
+        },
+        "validation": {
+            "total": 0.388685355335852,
+            "reconstruction": 0.36380334685906407,
+            "kl": 2.9621438850752497
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 43,
+        "beta": 0.0086,
+        "condition": {
+            "noise": 0.0,
+            "missing": 0.5,
+            "modalities": "A"
+        },
+        "train": {
+            "total": 0.7325946834957098,
+            "reconstruction": 0.7134899454306215,
+            "kl": 2.2214812062015965
+        },
+        "validation": {
+            "total": 0.5027178199021481,
+            "reconstruction": 0.47711405092621945,
+            "kl": 2.977182526574731
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 44,
+        "beta": 0.0088,
+        "condition": {
+            "noise": 0.1,
+            "missing": 0.3,
+            "modalities": "BC"
+        },
+        "train": {
+            "total": 0.4991570636181846,
+            "reconstruction": 0.47712789086264923,
+            "kl": 2.5033151077275484
+        },
+        "validation": {
+            "total": 0.36403667005451523,
+            "reconstruction": 0.3391169508449442,
+            "kl": 2.8317863709265745
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 45,
+        "beta": 0.009000000000000001,
+        "condition": {
+            "noise": 0.0,
+            "missing": 0.3,
+            "modalities": "B"
+        },
+        "train": {
+            "total": 0.628765071144292,
+            "reconstruction": 0.6088060411118145,
+            "kl": 2.217670085145536
+        },
+        "validation": {
+            "total": 0.536658568478429,
+            "reconstruction": 0.5100991488138109,
+            "kl": 2.9510465578240184
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 46,
+        "beta": 0.0092,
+        "condition": {
+            "noise": 0.05,
+            "missing": 0.3,
+            "modalities": "ABC"
+        },
+        "train": {
+            "total": 0.4136744974358856,
+            "reconstruction": 0.3898333445255105,
+            "kl": 2.5914295168400607
+        },
+        "validation": {
+            "total": 0.31406641973974175,
+            "reconstruction": 0.28772091795985677,
+            "kl": 2.8636415006584994
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 47,
+        "beta": 0.0094,
+        "condition": {
+            "noise": 0.05,
+            "missing": 0.1,
+            "modalities": "C"
+        },
+        "train": {
+            "total": 0.6123795050464265,
+            "reconstruction": 0.5906916441429765,
+            "kl": 2.307219381868783
+        },
+        "validation": {
+            "total": 0.4585985634384594,
+            "reconstruction": 0.4320568500568313,
+            "kl": 2.8235866461795296
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 48,
+        "beta": 0.0096,
+        "condition": {
+            "noise": 0.0,
+            "missing": 0.1,
+            "modalities": "AC"
+        },
+        "train": {
+            "total": 0.3551831914202289,
+            "reconstruction": 0.33054586501020256,
+            "kl": 2.5663881103914874
+        },
+        "validation": {
+            "total": 0.32658692993791943,
+            "reconstruction": 0.29893400786533064,
+            "kl": 2.880512763472876
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 49,
+        "beta": 0.0098,
+        "condition": {
+            "noise": 0.2,
+            "missing": 0.5,
+            "modalities": "ABC"
+        },
+        "train": {
+            "total": 0.524525658975626,
+            "reconstruction": 0.5008048443610387,
+            "kl": 2.4204912416363156
+        },
+        "validation": {
+            "total": 0.3413186840794926,
+            "reconstruction": 0.31221699952454246,
+            "kl": 2.969559580143103
+        },
+        "best_validation": Infinity
+    },
+    {
+        "epoch": 50,
+        "beta": 0.01,
+        "condition": {
+            "noise": 0.0,
+            "missing": 0.5,
+            "modalities": "ABC"
+        },
+        "train": {
+            "total": 0.4945770277301842,
+            "reconstruction": 0.4701351612942404,
+            "kl": 2.444186760776672
+        },
+        "validation": {
+            "total": 0.3357530936762582,
+            "reconstruction": 0.30590105026320275,
+            "kl": 2.985204363103125
+        },
+        "best_validation": 0.30590105026320275
+    },
+    {
+        "epoch": 51,
+        "beta": 0.01,
+        "condition": {
+            "noise": 0.2,
+            "missing": 0.1,
+            "modalities": "C"
+        },
+        "train": {
+            "total": 0.6723791794914469,
+            "reconstruction": 0.6503414760545223,
+            "kl": 2.2037703706568945
+        },
+        "validation": {
+            "total": 0.49886032246240963,
+            "reconstruction": 0.4698751038793741,
+            "kl": 2.8985220106164555
+        },
+        "best_validation": 0.30590105026320275
+    },
+    {
+        "epoch": 52,
+        "beta": 0.01,
+        "condition": {
+            "noise": 0.05,
+            "missing": 0.1,
+            "modalities": "A"
+        },
+        "train": {
+            "total": 0.575592759418999,
+            "reconstruction": 0.5521250683293443,
+            "kl": 2.346769172865178
+        },
+        "validation": {
+            "total": 0.4737337227684581,
+            "reconstruction": 0.4453096173236198,
+            "kl": 2.842410647225989
+        },
+        "best_validation": 0.30590105026320275
+    },
+    {
+        "epoch": 53,
+        "beta": 0.01,
+        "condition": {
+            "noise": 0.0,
+            "missing": 0.3,
+            "modalities": "BC"
+        },
+        "train": {
+            "total": 0.4919229094974544,
+            "reconstruction": 0.46755949756265713,
+            "kl": 2.4363412953273293
+        },
+        "validation": {
+            "total": 0.36943221315905345,
+            "reconstruction": 0.34104702258682607,
+            "kl": 2.838519092366596
+        },
+        "best_validation": 0.30590105026320275
+    },
+    {
+        "epoch": 54,
+        "beta": 0.01,
+        "condition": {
+            "noise": 0.2,
+            "missing": 0.5,
+            "modalities": "A"
+        },
+        "train": {
+            "total": 0.7481240870564314,
+            "reconstruction": 0.7274022870144309,
+            "kl": 2.072180155103445
+        },
+        "validation": {
+            "total": 0.4951255124110811,
+            "reconstruction": 0.4670120323377677,
+            "kl": 2.811347997730887
+        },
+        "best_validation": 0.30590105026320275
+    },
+    {
+        "epoch": 55,
+        "beta": 0.01,
+        "condition": {
+            "noise": 0.05,
+            "missing": 0.1,
+            "modalities": "AC"
+        },
+        "train": {
+            "total": 0.35970636617491936,
+            "reconstruction": 0.334062679946928,
+            "kl": 2.56436868261719
+        },
+        "validation": {
+            "total": 0.3758629068140046,
+            "reconstruction": 0.3467985579029227,
+            "kl": 2.9064350381390245
+        },
+        "best_validation": 0.30590105026320275
+    },
+    {
+        "epoch": 56,
+        "beta": 0.01,
+        "condition": {
+            "noise": 0.2,
+            "missing": 0.1,
+            "modalities": "AB"
+        },
+        "train": {
+            "total": 0.39790198689631345,
+            "reconstruction": 0.3706910690445135,
+            "kl": 2.721091882603803
+        },
+        "validation": {
+            "total": 0.3868330284280259,
+            "reconstruction": 0.3580562761939562,
+            "kl": 2.8776753053837734
+        },
+        "best_validation": 0.30590105026320275
+    },
+    {
+        "epoch": 57,
+        "beta": 0.01,
+        "condition": {
+            "noise": 0.05,
+            "missing": 0.0,
+            "modalities": "ABC"
+        },
+        "train": {
+            "total": 0.2877769964544153,
+            "reconstruction": 0.2607961666584447,
+            "kl": 2.6980830976062213
+        },
+        "validation": {
+            "total": 0.28410495296259247,
+            "reconstruction": 0.2575627720932579,
+            "kl": 2.6542181685634945
+        },
+        "best_validation": 0.2575627720932579
+    },
+    {
+        "epoch": 58,
+        "beta": 0.01,
+        "condition": {
+            "noise": 0.0,
+            "missing": 0.5,
+            "modalities": "B"
+        },
+        "train": {
+            "total": 0.7338103992944006,
+            "reconstruction": 0.7129844285167023,
+            "kl": 2.082597224961383
+        },
+        "validation": {
+            "total": 0.5224906266310202,
+            "reconstruction": 0.49497813485246533,
+            "kl": 2.7512493908516187
+        },
+        "best_validation": 0.2575627720932579
+    },
+    {
+        "epoch": 59,
+        "beta": 0.01,
+        "condition": {
+            "noise": 0.1,
+            "missing": 0.1,
+            "modalities": "B"
+        },
+        "train": {
+            "total": 0.5325017012391667,
+            "reconstruction": 0.5091690918643587,
+            "kl": 2.333261072306458
+        },
+        "validation": {
+            "total": 0.5329397163666506,
+            "reconstruction": 0.506080375125157,
+            "kl": 2.6859341705508712
+        },
+        "best_validation": 0.2575627720932579
+    },
+    {
+        "epoch": 60,
+        "beta": 0.01,
+        "condition": {
+            "noise": 0.0,
+            "missing": 0.5,
+            "modalities": "BC"
+        },
+        "train": {
+            "total": 0.6090964817582606,
+            "reconstruction": 0.5861569513296178,
+            "kl": 2.293953127977493
+        },
+        "validation": {
+            "total": 0.396182897602788,
+            "reconstruction": 0.3669025835119164,
+            "kl": 2.9280313971561567
+        },
+        "best_validation": 0.2575627720932579
+    },
+    {
+        "epoch": 61,
+        "beta": 0.01,
+        "condition": {
+            "noise": 0.2,
+            "missing": 0.0,
+            "modalities": "BC"
+        },
+        "train": {
+            "total": 0.3646228291111044,
+            "reconstruction": 0.3381127323906966,
+            "kl": 2.6510097408792355
+        },
+        "validation": {
+            "total": 0.3798387727690251,
+            "reconstruction": 0.3522445429748394,
+            "kl": 2.759423075991598
+        },
+        "best_validation": 0.2575627720932579
+    },
+    {
+        "epoch": 62,
+        "beta": 0.01,
+        "condition": {
+            "noise": 0.1,
+            "missing": 0.1,
+            "modalities": "BC"
+        },
+        "train": {
+            "total": 0.3774509115569737,
+            "reconstruction": 0.35231963666382066,
+            "kl": 2.5131274763376736
+        },
+        "validation": {
+            "total": 0.37785436025170654,
+            "reconstruction": 0.350099649848459,
+            "kl": 2.775471090830947
+        },
+        "best_validation": 0.2575627720932579
+    },
+    {
+        "epoch": 63,
+        "beta": 0.01,
+        "condition": {
+            "noise": 0.0,
+            "missing": 0.1,
+            "modalities": "AB"
+        },
+        "train": {
+            "total": 0.3709603046298658,
+            "reconstruction": 0.34354617891470973,
+            "kl": 2.7414126161233994
+        },
+        "validation": {
+            "total": 0.3684511184057326,
+            "reconstruction": 0.339613371209487,
+            "kl": 2.8837748203022757
+        },
+        "best_validation": 0.2575627720932579
+    },
+    {
+        "epoch": 64,
+        "beta": 0.01,
+        "condition": {
+            "noise": 0.05,
+            "missing": 0.3,
+            "modalities": "A"
+        },
+        "train": {
+            "total": 0.6495285510360188,
+            "reconstruction": 0.6267271422204517,
+            "kl": 2.28014100893793
+        },
+        "validation": {
+            "total": 0.5161046080030445,
+            "reconstruction": 0.4879203433355825,
+            "kl": 2.8184263811445307
+        },
+        "best_validation": 0.2575627720932579
+    },
+    {
+        "epoch": 65,
+        "beta": 0.01,
+        "condition": {
+            "noise": 0.1,
+            "missing": 0.1,
+            "modalities": "C"
+        },
+        "train": {
+            "total": 0.6441414499754594,
+            "reconstruction": 0.6222459598495501,
+            "kl": 2.1895492737955258
+        },
+        "validation": {
+            "total": 0.5000002991975755,
+            "reconstruction": 0.47198432048786804,
+            "kl": 2.801598023739277
+        },
+        "best_validation": 0.2575627720932579
+    },
+    {
+        "epoch": 66,
+        "beta": 0.01,
+        "condition": {
+            "noise": 0.0,
+            "missing": 0.1,
+            "modalities": "ABC"
+        },
+        "train": {
+            "total": 0.330499781251619,
+            "reconstruction": 0.3041227805158267,
+            "kl": 2.6377001790142565
+        },
+        "validation": {
+            "total": 0.2894941848001362,
+            "reconstruction": 0.2626238575798998,
+            "kl": 2.687032778267527
+        },
+        "best_validation": 0.2575627720932579
+    },
+    {
+        "epoch": 67,
+        "beta": 0.01,
+        "condition": {
+            "noise": 0.05,
+            "missing": 0.5,
+            "modalities": "AC"
+        },
+        "train": {
+            "total": 0.569736310615223,
+            "reconstruction": 0.5462451588297924,
+            "kl": 2.349115264195415
+        },
+        "validation": {
+            "total": 0.32812880417850243,
+            "reconstruction": 0.29966621056398157,
+            "kl": 2.846259438291976
+        },
+        "best_validation": 0.2575627720932579
+    }
+]

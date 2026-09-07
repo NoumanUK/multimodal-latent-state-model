@@ -1,0 +1,442 @@
+% Robust Multimodal Variational Latent-State Modelling
+% Compile with: pdflatex main && bibtex main && pdflatex main && pdflatex main
+\documentclass[10pt,twocolumn]{article}
+\usepackage[a4paper,top=0.70in,bottom=0.75in,left=0.70in,right=0.70in,columnsep=0.28in]{geometry}
+\usepackage{amsmath,amssymb,bm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{siunitx}
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{placeins}
+\usepackage{natbib}
+\usepackage{url}
+\graphicspath{{figures/}{paper/figures/}}
+\hypersetup{colorlinks=true,citecolor=blue,linkcolor=blue,urlcolor=blue}
+\sisetup{round-mode=places,round-precision=4}
+\setlength{\columnsep}{0.28in}
+\setlength{\textfloatsep}{8pt plus 2pt minus 2pt}
+\setlength{\floatsep}{7pt plus 2pt minus 2pt}
+\setlength{\intextsep}{7pt plus 2pt minus 2pt}
+
+\title{Robust Multimodal Variational Latent-State Modelling for Noisy and Incomplete Dynamical Systems}
+\author{Muhammad Nouman\\\small Independent Researcher\\\small \texttt{nouman.ipyn@outlook.com}}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Estimating hidden states from heterogeneous sensors is difficult when observations are noisy, partially missing, or entire modalities are unavailable. We propose a Robust Temporal Multimodal Variational Autoencoder (MVAE) with modality-specific recurrent encoders, mask-aware Product-of-Experts fusion, a shared state decoder, and deterministic residual latent dynamics. The method is evaluated on the 40-dimensional Lorenz--96 system using three synthetic observation modalities under controlled noise, elementwise missingness, and whole-modality dropout. A corruption-matched Robust Static MVAE isolates the contribution of temporal context. With complete observations, Static and Temporal reconstruction are comparable; as information is removed, the Temporal model reduces MSE by 31.15\% and 42.87\% at 30\% and 50\% missingness, by 5.76--50.35\% across two-modality subsets, and by 32.02--40.89\% with a single modality. Corruption-aware training further improves robustness over clean-only training. Posterior sampling shows greater dispersion under information loss, but nominal 95\% intervals remain severely under-calibrated and forecast uncertainty does not increase with horizon. The results support temporal multimodal inference for robust latent-state estimation while motivating stochastic latent dynamics and improved uncertainty calibration.
+\end{abstract}
+
+
+\noindent\textbf{Keywords:} multimodal variational inference; latent-state modelling; missing data; Product-of-Experts; Lorenz--96; forecasting; uncertainty.
+
+\section{Introduction}
+Hidden states in scientific dynamical systems are often inferred from multiple sensors or experimental techniques rather than observed directly. These modalities can provide complementary projections of the same evolving process while differing in noise level, nonlinearity, and availability. Reliable state reconstruction must therefore combine heterogeneous evidence and exploit temporal structure when current observations are incomplete.
+
+This problem is closely related to state estimation and data assimilation (DA), where observations are combined with dynamical information to recover an evolving state. Learned low-dimensional representations and surrogate dynamics have recently been explored to reduce the cost of inference in nonlinear, high-dimensional systems \citep{peyron2021latent,brajard2020combining}. Lorenz--96 provides a standard controlled benchmark because its governing equations and full state are known while its dynamics remain chaotic \citep{lorenz1996predictability,law2016determining,terasaki2014effective}.
+
+Variational autoencoders (VAEs) provide probabilistic latent representations through amortized variational inference \citep{kingma2014auto}. Multimodal VAEs extend this setting to heterogeneous observations; in particular, Product-of-Experts (PoE) fusion permits inference from different modality subsets by omitting unavailable experts \citep{wu2018multimodal}. Sequential latent-variable models further show that historical observations can constrain latent-state inference through learned temporal structure \citep{krishnan2017structured,karl2017deep,tan2020factorized}.
+
+This study asks a focused question: \emph{does temporal multimodal variational inference outperform a corruption-matched static multimodal model as instantaneous observations become incomplete?} We evaluate a Robust Temporal MVAE with modality-specific recurrent encoders, mask-aware PoE fusion, a shared decoder, and deterministic residual latent dynamics. A matched Robust Static MVAE uses the same modalities, corruption process, masks, latent dimension, PoE fusion, and current-state target, but no history or forecast transition.
+
+The contributions are: (i) a controlled three-modality Lorenz--96 benchmark with direct, local-linear, and nonlinear observation operators; (ii) a mask-aware temporal MVAE trained across noise, elementwise missingness, and modality dropout; (iii) a matched Static-versus-Temporal comparison isolating the value of temporal context; and (iv) posterior-sampling diagnostics that reveal information-sensitive dispersion but substantial uncertainty miscalibration.
+
+\section{Related Work}
+\subsection{Variational latent-variable models}
+For an observation $x$, a VAE approximates the latent posterior as
+\begin{equation}
+q_{\phi}(z\mid x)=\mathcal{N}\!\left(z;\mu_{\phi}(x),\operatorname{diag}(\sigma_{\phi}^2(x))\right).
+\end{equation}
+Training maximizes the evidence lower bound, balancing reconstruction with a Kullback--Leibler regularizer toward a prior, commonly $p(z)=\mathcal{N}(0,I)$ \citep{kingma2014auto}. This provides the probabilistic latent foundation used here.
+
+\subsection{Multimodal variational inference}
+Multimodal VAEs learn shared latent representations from heterogeneous observations. JMVAE introduces joint and modality-specific inference mechanisms \citep{suzuki2017joint}, whereas MVAE uses PoE aggregation to support missing modalities without a separate encoder for every subset \citep{wu2018multimodal}. For Gaussian experts
+\begin{equation}
+q_m(z\mid x_m)=\mathcal{N}(z;\mu_m,\Sigma_m),
+\end{equation}
+and a standard-normal prior expert, the fused precision for available modalities $\mathcal{A}$ is
+\begin{equation}
+\Lambda = I+\sum_{m\in\mathcal{A}}\Sigma_m^{-1},
+\end{equation}
+with
+\begin{equation}
+\Sigma=\Lambda^{-1}, \qquad
+\mu=\Sigma\sum_{m\in\mathcal{A}}\Sigma_m^{-1}\mu_m.
+\end{equation}
+PoE is therefore attractive for subset inference, although its posterior approximation has known trade-offs \citep{sutter2021generalized}.
+
+\subsection{Sequential latent-state modelling}
+Deep Markov Models and Deep Variational Bayes Filters combine latent inference with nonlinear temporal dynamics \citep{krishnan2017structured,karl2017deep}. Multimodal Deep Markov Models further address missing time points and missing modalities \citep{tan2020factorized}. These works motivate recurrent history encoders here, while our forecasting transition remains deterministic rather than stochastic.
+
+\subsection{Latent representations and Lorenz--96}
+Lorenz--96 is widely used in nonlinear filtering, DA, and learned-dynamics studies. Prior work examines observation density and placement \citep{law2016determining}, non-orthogonal observations and correlated errors \citep{terasaki2014effective}, ML-assisted DA under sparse/noisy observations \citep{brajard2020combining}, and latent-space DA using autoencoders and surrogate operators \citep{peyron2021latent}. VAE-enhanced variational DA on Lorenz systems provides additional precedent for controlled linear and nonlinear observation experiments \citep{vaevar2024}.
+
+\section{Problem Formulation}
+Let the hidden dynamical state at time $t$ be $X_t\in\mathbb{R}^{40}$. Rather than exposing $X_t$ directly to the inference model, $M=3$ observation modalities are generated through heterogeneous observation operators:
+\begin{equation}
+Y_t^{(m)}=H_m(X_t)+\epsilon_t^{(m)}, \qquad m\in\{A,B,C\}.
+\end{equation}
+A binary mask $M_t^{(m)}$ indicates which observation elements are available. The objective is to infer the current hidden state from available multimodal evidence,
+\begin{equation}
+\hat X_t=f_{\theta}\left(\{Y_{\tau}^{(m)},M_{\tau}^{(m)}\}_{\tau=t-L+1}^{t}\right),
+\end{equation}
+and, for the temporal model, predict future states $\hat X_{t+h}$ for $h\in\{1,5,10\}$.
+
+The primary research question is whether temporal context improves current-state reconstruction relative to a matched static model as current observations become noisy or incomplete. The principal comparison therefore uses the same ground truth, observation operators, normalization, corruption process, latent dimension, PoE fusion, and decoder target for both models; only access to historical observations and the temporal forecasting objective differ.
+
+\section{Methodology}
+\subsection{Lorenz--96 ground-truth simulation}
+The Lorenz--96 system is defined by
+\begin{equation}
+\frac{dx_i}{dt}=(x_{i+1}-x_{i-2})x_{i-1}-x_i+F,
+\label{eq:l96}
+\end{equation}
+with cyclic indexing. We use $N=40$ state variables and forcing $F=8$, a standard chaotic regime \citep{lorenz1996predictability}. Numerical integration uses fourth-order Runge--Kutta (RK4) with integration step $\Delta t_{\mathrm{int}}=0.01$. Every fifth integration state is retained, producing an effective saved interval $\Delta t=0.05$. The first 1,000 integration steps are discarded as burn-in.
+
+One hundred trajectories are generated, each containing 2,000 retained states. Initial states are sampled as
+\begin{equation}
+x_i(0)=F+\eta_i, \qquad \eta_i\sim\mathcal{N}(0,0.1^2).
+\end{equation}
+Complete trajectories are divided into 70 training, 15 validation, and 15 test trajectories. Splitting by trajectory avoids leakage of temporally adjacent states across partitions. All clean states are stored as immutable ground truth; noise and missingness are applied only to derived observations.
+
+\subsection{Synthetic multimodal observation operators}
+Three 20-dimensional observation modalities provide complementary views of $X_t$.
+
+\paragraph{Modality A: sparse direct observations.}
+\begin{equation}
+Y_t^{(A)}=[x_1,x_3,x_5,\ldots,x_{39}].
+\end{equation}
+This represents direct sensing of alternating state coordinates.
+
+\paragraph{Modality B: shifted local linear observations.}
+The second modality mixes neighbouring coordinates,
+\begin{equation}
+Y_{t,j}^{(B)}=\frac{x_{2j}+x_{2j+1}}{\sqrt{2}},
+\end{equation}
+with cyclic indexing for the final pair. It therefore represents an indirect local linear measurement rather than a direct coordinate selection.
+
+\paragraph{Modality C: nonlinear observations.}
+The complementary even-indexed coordinates are transformed using
+\begin{equation}
+H_C(x)=\frac{x}{2}\left[\left(\frac{|x|}{2}\right)^2+1\right]
+=\frac{x^3}{8}+\frac{x}{2},
+\end{equation}
+so that
+\begin{equation}
+Y_t^{(C)}=[H_C(x_2),H_C(x_4),\ldots,H_C(x_{40})].
+\end{equation}
+These operators are synthetic sensing mechanisms, not proxies for particular real instruments. Their purpose is to create heterogeneous direct, mixed, and nonlinear views while retaining exact simulation truth for evaluation.
+
+\subsection{Noise, missingness, and modality dropout}
+Gaussian noise is added independently to each modality feature:
+\begin{equation}
+\widetilde y_j=y_j+\epsilon_j,
+\qquad
+\epsilon_j\sim\mathcal{N}\!\left(0,(\alpha\sigma_j^{\mathrm{train}})^2\right),
+\end{equation}
+where $\sigma_j^{\mathrm{train}}$ is the clean training-set standard deviation of feature $j$ and
+\begin{equation}
+\alpha\in\{0,0.05,0.10,0.20\}.
+\end{equation}
+Elementwise missing-completely-at-random corruption uses rates
+\begin{equation}
+r\in\{0,0.10,0.30,0.50\}.
+\end{equation}
+Whole-modality availability is evaluated for all non-empty subsets
+\begin{equation}
+\{ABC,AB,AC,BC,A,B,C\}.
+\end{equation}
+The corruption pipeline is fixed as
+\begin{equation}
+\begin{aligned}
+\text{clean observation} &\rightarrow \text{noise}\\
+&\rightarrow \text{element missingness}\\
+&\rightarrow \text{modality dropout}\\
+&\rightarrow \text{normalization}.
+\end{aligned}
+\end{equation}
+Normalization statistics are fitted only on clean training observations. Missing normalized values are reset to zero, while binary masks distinguish missing placeholders from genuine zero-valued observations.
+
+\subsection{Temporal windows}
+For current time $t$, the Temporal MVAE receives the preceding $L=20$ saved observations, including time $t$:
+\begin{equation}
+\{Y_{t-19:t}^{(m)},M_{t-19:t}^{(m)}\}_{m=A,B,C}.
+\end{equation}
+Because $\Delta t=0.05$, this corresponds to one Lorenz time unit of history. The current target is $X_t$, and future targets are
+\begin{equation}
+X_{t+1},\quad X_{t+5},\quad X_{t+10},
+\end{equation}
+corresponding to 0.05, 0.25, and 0.50 Lorenz time units ahead. Each training trajectory provides 1,971 valid windows, giving 137,970 training windows and 29,565 windows for each of validation and test.
+
+\subsection{Robust Static MVAE}
+The Robust Static MVAE is the principal control model. At the current time, each modality's 20 values are concatenated with its 20-element mask. A modality-specific multilayer perceptron maps the resulting 40-dimensional vector to a Gaussian expert with 16-dimensional mean and log-variance. Available experts are fused with the standard-normal prior using the same mask-aware PoE formulation as the Temporal model. A shared decoder maps the fused latent representation to the normalized 40-dimensional current state. The Static model is trained under the same corruption distribution as the Temporal model but receives no observation history and has no forecasting transition.
+
+\subsection{Robust Temporal MVAE}
+For modality $m$, values and masks are concatenated at each historical time step,
+\begin{equation}
+u_{\tau}^{(m)}=[Y_{\tau}^{(m)},M_{\tau}^{(m)}]\in\mathbb{R}^{40}.
+\end{equation}
+A learned $40\rightarrow64$ projection with ReLU activation feeds a GRU with hidden size 64. The final hidden representation parameterizes a diagonal Gaussian expert,
+\begin{equation}
+q_m(z_t\mid Y_{t-L+1:t}^{(m)},M_{t-L+1:t}^{(m)})
+=\mathcal{N}(\mu_t^{(m)},\operatorname{diag}(\sigma_t^{2(m)})),
+\end{equation}
+with latent dimension $d_z=16$. Log-variances are numerically bounded during implementation. The three available experts are fused through PoE with a standard-normal prior.
+
+The shared decoder is
+\begin{equation}
+16\rightarrow64\rightarrow128\rightarrow40,
+\end{equation}
+with ReLU hidden activations, producing current reconstruction
+\begin{equation}
+\hat X_t=D_{\theta}(z_t).
+\end{equation}
+
+\subsection{Deterministic latent dynamics and forecasting}
+A residual transition network propagates the latent representation:
+\begin{equation}
+z_{t+1}=z_t+f_{\psi}(z_t),
+\end{equation}
+where $f_{\psi}$ is an MLP
+\begin{equation}
+16\rightarrow64\rightarrow64\rightarrow16.
+\end{equation}
+Recursive transition produces $z_{t+h}$ and the same decoder generates
+\begin{equation}
+\hat X_{t+h}=D_{\theta}(z_{t+h}).
+\end{equation}
+The transition is deterministic. Consequently, the architecture should be interpreted as a probabilistic variational state estimator with deterministic latent dynamics, rather than as a fully probabilistic state-space model.
+
+% -----------------------------------------------------------------------------
+% FIGURE 1 PLACEHOLDER: Model architecture / pipeline
+% Recommended filename: figures/figure_01_model_overview.pdf
+% Uncomment when the architecture figure is available.
+% \begin{figure*}[t]
+% \centering
+% \includegraphics[width=0.98\textwidth]{figure_01_model_overview.pdf}
+% \caption{Overview of the proposed Robust Temporal MVAE. Histories of three observation modalities and their binary masks are processed by modality-specific recurrent encoders. Gaussian experts are combined through a mask-aware Product-of-Experts posterior. The fused latent state reconstructs the current Lorenz--96 state and is recursively propagated by a residual latent transition for multi-horizon forecasting.}
+% \label{fig:model}
+% \end{figure*}
+% -----------------------------------------------------------------------------
+
+\subsection{Training objective}
+For the Temporal model, the loss is
+\begin{equation}
+\mathcal{L}
+=\mathcal{L}_{\mathrm{current}}
++\mathcal{L}_{\mathrm{forecast}}
++\beta D_{\mathrm{KL}}\!\left[q_{\phi}(z_t\mid\mathcal{Y})\,\|\,\mathcal{N}(0,I)\right].
+\end{equation}
+Current-state reconstruction uses
+\begin{equation}
+\mathcal{L}_{\mathrm{current}}=\frac{1}{40}\|X_t-\hat X_t\|_2^2,
+\end{equation}
+and forecast reconstruction is
+\begin{equation}
+\mathcal{L}_{\mathrm{forecast}}=
+\frac{1}{3}\sum_{h\in\{1,5,10\}}
+\frac{1}{40}\|X_{t+h}-\hat X_{t+h}\|_2^2.
+\end{equation}
+The maximum KL coefficient is $\beta=0.01$ with a 50-epoch warm-up. Current and forecast reconstruction terms receive equal weight. The Static model optimizes the corresponding current-state reconstruction and KL terms without the forecasting objective.
+
+\subsection{Corruption-aware training}
+Robust training exposes the model to the same families of corruptions later used for evaluation. Conditions are sampled across noise levels, missingness rates, and modality subsets. This prevents the PoE from being trained exclusively in the complete-$ABC$ regime and encourages individual modality experts and their combinations to remain useful when information is removed. The robust Temporal checkpoint selected by validation occurred at epoch 66; the matched robust Static checkpoint occurred at epoch 57. The previously trained clean-only Temporal model is retained only for the robustness-training ablation.
+
+\section{Experimental Setup}
+Models are implemented in PyTorch and trained with Adam using learning rate $10^{-3}$, batch size 256, maximum 500 epochs, and gradient-norm clipping at 5.0. The Temporal model uses history length 20, latent dimension 16, and forecast horizons $\{1,5,10\}$. Validation uses the clean validation split as a fixed model-selection reference.
+
+The primary evaluation metric is normalized current-state MSE. RMSE and MAE are also suitable regression metrics, but the main comparisons report MSE because it directly corresponds to the reconstruction objective. Relative Temporal improvement is defined as
+\begin{equation}
+\operatorname{Improvement}(\%)=
+\frac{\operatorname{MSE}_{\mathrm{Static}}-\operatorname{MSE}_{\mathrm{Temporal}}}
+{\operatorname{MSE}_{\mathrm{Static}}}\times100.
+\label{eq:improvement}
+\end{equation}
+Positive values therefore indicate lower error for the Temporal model; negative values indicate lower error for the Static model.
+
+\section{Results}
+\subsection{Static versus Temporal performance under observation noise}
+Table~\ref{tab:noise-missing} shows that noise alone produces only modest separation. Static and Temporal MSE are 0.2549 and 0.2579 under clean observations; the Temporal model becomes marginally better at 10\% noise and improves MSE by 4.19\% at 20\%. Thus, temporal context adds little when the current multimodal observation remains largely complete.
+
+% FIGURE 2 -- generated by scripts/generate_publication_figures.py
+\begin{figure}[t]
+\centering
+\IfFileExists{figures/figure_02_noise_robustness.pdf}{%
+  \includegraphics[width=0.88\linewidth]{figures/figure_02_noise_robustness.pdf}%
+}{%
+  \fbox{\parbox[c][4.4cm][c]{0.82\linewidth}{\centering
+  \textbf{Figure 2 placeholder}\\[4pt]
+  Add: \url{figures/figure_02_noise_robustness.pdf}}}}%
+\caption{Normalized current-state MSE of the Robust Static and Robust Temporal MVAEs under increasing Gaussian observation noise. The models are comparable under mild noise, while the Temporal model obtains a modest advantage at the strongest tested noise level.}
+\label{fig:noise}
+\end{figure}
+
+\subsection{Temporal context under elementwise missingness}
+Temporal context becomes substantially more valuable under missing observations. Relative MSE reductions increase from 11.68\% at 10\% missingness to 31.15\% at 30\% and 42.87\% at 50\% (Table~\ref{tab:noise-missing}), indicating that historical observations increasingly compensate for information removed from the current input.
+
+\begin{figure}[t]
+\centering
+\IfFileExists{figures/figure_03_missingness_robustness.pdf}{%
+  \includegraphics[width=0.88\linewidth]{figures/figure_03_missingness_robustness.pdf}%
+}{%
+  \fbox{\parbox[c][4.4cm][c]{0.82\linewidth}{\centering
+  \textbf{Figure 3 placeholder}\\[4pt]
+  Add: \url{figures/figure_03_missingness_robustness.pdf}}}}%
+\caption{Normalized current-state MSE under elementwise missing-completely-at-random observations. Temporal context provides progressively larger reductions in reconstruction error as the missingness rate increases.}
+\label{fig:missing}
+\end{figure}
+
+\begin{table*}[t]
+\centering
+\caption{Robust Static versus Robust Temporal MVAE under Gaussian noise and elementwise missingness. Positive improvement denotes lower MSE for the Temporal model.}
+\label{tab:noise-missing}
+\begin{tabular}{llrrr}
+\toprule
+Corruption & Level & Static MSE & Temporal MSE & Improvement (\%)\\
+\midrule
+Noise & 0\%  & 0.254889 & 0.257936 & -1.18\\
+Noise & 5\%  & 0.256738 & 0.258618 & -0.73\\
+Noise & 10\% & 0.262003 & 0.260755 & 0.48\\
+Noise & 20\% & 0.280745 & 0.268974 & 4.19\\
+\midrule
+Missingness & 0\%  & 0.254889 & 0.257936 & -1.18\\
+Missingness & 10\% & 0.293130 & 0.258895 & 11.68\\
+Missingness & 30\% & 0.392399 & 0.270159 & 31.15\\
+Missingness & 50\% & 0.530340 & 0.302983 & 42.87\\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\subsection{Whole-modality dropout}
+Table~\ref{tab:modalities} and Figure~\ref{fig:dropout} show the largest temporal gains. Relative MSE reductions are 5.76\%, 15.55\%, and 50.35\% for $AB$, $AC$, and $BC$, and 32.02--40.89\% when only one modality remains. Complete $ABC$ observations remain essentially tied, supporting the narrower conclusion that temporal history is most useful when present-time multimodal information is incomplete.
+
+\begin{figure}[t]
+\centering
+\IfFileExists{figures/figure_04_modality_dropout.pdf}{%
+  \includegraphics[width=0.92\linewidth]{figures/figure_04_modality_dropout.pdf}%
+}{%
+  \fbox{\parbox[c][4.4cm][c]{0.82\linewidth}{\centering
+  \textbf{Figure 4 placeholder}\\[4pt]
+  Add: \url{figures/figure_04_modality_dropout.pdf}}}}%
+\caption{Current-state MSE for all non-empty modality subsets. The Temporal model is approximately tied with the Static model for complete $ABC$ observations but becomes increasingly advantageous as entire modalities are removed.}
+\label{fig:dropout}
+\end{figure}
+
+\begin{table*}[t]
+\centering
+\caption{Current-state reconstruction under whole-modality availability conditions.}
+\label{tab:modalities}
+\begin{tabular}{lrrr}
+\toprule
+Available modalities & Static MSE & Temporal MSE & Temporal improvement (\%)\\
+\midrule
+ABC & 0.254889 & 0.257936 & -1.18\\
+AB  & 0.336154 & 0.316807 & 5.76\\
+AC  & 0.375183 & 0.316841 & 15.55\\
+BC  & 0.704663 & 0.349839 & 50.35\\
+A   & 0.754140 & 0.512651 & 32.02\\
+B   & 0.792181 & 0.506353 & 36.08\\
+C   & 0.898369 & 0.531050 & 40.89\\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\subsection{Summary of temporal improvement}
+Figure~\ref{fig:improvement} summarizes the same pattern: gains are small with nearly complete current information and largest under severe information loss, reaching 50.35\% for $BC$ and 42.87\% at 50\% missingness.
+
+\begin{figure}[t]
+\centering
+\IfFileExists{figures/figure_05_temporal_improvement.pdf}{%
+  \includegraphics[width=0.90\linewidth]{figures/figure_05_temporal_improvement.pdf}%
+}{%
+  \fbox{\parbox[c][4.4cm][c]{0.82\linewidth}{\centering
+  \textbf{Figure 5 placeholder}\\[4pt]
+  Add: \url{figures/figure_05_temporal_improvement.pdf}}}}%
+\caption{Relative reduction in normalized current-state MSE achieved by the Robust Temporal MVAE compared with the corruption-matched Robust Static MVAE. Improvement is defined by Eq.~\eqref{eq:improvement}.}
+\label{fig:improvement}
+\end{figure}
+
+% OPTIONAL ALTERNATIVE / SUPPLEMENTARY FIGURE C.
+% The existing script also generates figure_c_relative_improvement.pdf.
+% Do not include both Figure 5 and Figure C in the main paper if they communicate
+% essentially the same result. Figure C can be moved to supplementary material.
+% \begin{figure}[t]
+% \centering
+% \includegraphics[width=0.96\linewidth]{figures/figure_c_relative_improvement.pdf}
+% \caption{Relative Temporal improvement across all evaluated noise, missingness, and modality-availability conditions.}
+% \label{fig:all-improvement}
+% \end{figure}
+
+\subsection{Effect of corruption-aware temporal training}
+A separate ablation compares the Robust Temporal model with a Temporal MVAE trained only on clean complete observations. Clean-only training is better on clean $ABC$ data (MSE 0.226177 versus 0.257936), but robustness reverses this trade-off under corruption. At 10\%, 30\%, and 50\% missingness, robust training reduces MSE by approximately 21.85\%, 50.12\%, and 61.40\%, respectively. Under modality dropout it lowers MSE from 0.534874 to 0.316807 for $AB$, 1.334914 to 0.316841 for $AC$, and 1.643235 to 0.349839 for $BC$, with approximately 77--87\% reductions in single-modality conditions. Exposure to incomplete subsets is therefore critical for stable subset inference \citep{wu2018multimodal}.
+
+\subsection{Forecasting}
+The Temporal model predicts horizons $h=1,5,10$ (0.05, 0.25, and 0.50 Lorenz time units). For the clean-trained model under clean observations, forecast MSE rises from 0.218445 to 0.359077 and 0.617879 as horizon increases. The Robust Temporal validation checkpoint has current-state MSE 0.262053 and mean forecast loss 0.447741, with horizon-specific MSEs of 0.257469, 0.436679, and 0.649076. Forecasting is an auxiliary capability rather than the basis of the Static-versus-Temporal reconstruction comparison; a persistence baseline remains desirable for final evaluation.
+
+\subsection{Posterior-induced uncertainty}
+Uncertainty is estimated from 100 samples of the current latent posterior propagated through the deterministic decoder and transition. As information is removed, posterior-induced dispersion increases: predictive standard deviation rises from 0.0496 for clean $ABC$ observations to 0.0953 for $C$ only, and nominal 95\% interval width increases from about 0.188 to 0.360. However, empirical current-state coverage remains only 15.6--20.6\%. Under clean observations, forecast RMSE increases from 0.5030 at $h=1$ to 0.8009 at $h=10$, while predictive standard deviation falls from 0.0479 to 0.0392 and coverage from 15.13\% to 7.75\%. The model therefore captures information-sensitive dispersion but not calibrated predictive uncertainty.
+
+\begin{table*}[t]
+\centering
+\caption{Posterior-sampling uncertainty diagnostics for the Robust Temporal MVAE. Coverage denotes empirical coverage of nominal 95\% intervals.}
+\label{tab:uncertainty}
+\begin{tabular}{lrrrr}
+\toprule
+Condition & RMSE & Coverage (\%) & 95\% width & Predictive std.\\
+\midrule
+Clean $ABC$ & 0.507655 & 15.64 & 0.187553 & 0.049605\\
+30\% missing & 0.519501 & 15.79 & 0.195753 & 0.051774\\
+50\% missing & 0.551299 & 15.69 & 0.208882 & 0.055256\\
+$AB$ & 0.562438 & 16.68 & 0.221209 & 0.058511\\
+$A$ only & 0.714938 & 17.91 & 0.312592 & 0.082726\\
+$C$ only & 0.727438 & 20.62 & 0.359987 & 0.095290\\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\section{Discussion}
+The main result is conditional rather than universal. With complete $ABC$ observations, Static and Temporal reconstruction are nearly tied, but temporal gains grow systematically as current information is removed: 11.68\%, 31.15\%, and 42.87\% at 10\%, 30\%, and 50\% missingness, with similarly strong gains under modality dropout. This supports the interpretation that recurrent encoders use historical evidence to constrain the current latent state when instantaneous observations are insufficient \citep{tan2020factorized}.
+
+Robustness arises from two complementary mechanisms. Corruption-aware training teaches individual modality experts and the PoE fusion to operate on incomplete subsets, while temporal encoding contributes information unavailable to the Static model. The clean-versus-robust ablation isolates the first effect; the corruption-matched Static-versus-Temporal comparison isolates the second.
+
+The Lorenz--96 observation operators are methodological analogues of heterogeneous sensors rather than physical instrument models. Their advantage is exact hidden-state truth and controlled corruption, which permit direct attribution of reconstruction error. Finally, uncertainty results are directionally sensible but poorly calibrated: posterior dispersion grows as observations are removed, yet severe under-coverage and shrinking forecast dispersion expose the absence of explicit process uncertainty in the deterministic latent transition.
+
+\section{Limitations}
+The study uses a single synthetic Lorenz--96 system, so performance on higher-dimensional PDEs and real experimental data is untested. The observation operators are also synthetic and omit realistic effects such as calibration error, correlated noise, irregular sampling, and physical forward models; the benchmark therefore emphasizes robustness to information degradation rather than severe non-identifiability.
+
+The transition is deterministic, so the model is not a full probabilistic state-space model or Bayesian filter despite its variational current-state posterior $q_{\phi}(z_t\mid\mathcal{Y})$. Correspondingly, posterior-sampling intervals are strongly miscalibrated and should be interpreted only as posterior-induced dispersion. The principal results are based on single trained checkpoints rather than multiple random seeds, and forecasting has not yet been compared with a persistence baseline. These additions are needed for stronger statistical and predictive claims.
+
+\section{Future Work}
+The most direct extension is a probabilistic latent transition,
+\begin{equation}
+p_{\psi}(z_{t+1}\mid z_t)=\mathcal{N}\!\left(\mu_{\psi}(z_t),\Sigma_{\psi}(z_t)\right),
+\end{equation}
+so that process uncertainty can accumulate through time, moving the model toward probabilistic nonlinear state-space formulations \citep{krishnan2017structured,tan2020factorized}. Uncertainty calibration could then be improved using proper scoring rules, ensembles, richer posteriors, or calibrated observation likelihoods.
+
+More demanding observation models should include non-invertible operators, correlated and state-dependent errors, asynchronous sampling, and temporally structured sensor failures. The framework should also be tested on higher-dimensional PDE-based simulations and real multimodal scientific data. Finally, coupling the variational observation encoder with a physics-based or learned probabilistic dynamical prior would enable sequential Bayesian updates in latent space and direct comparison with filtering and variational DA methods \citep{peyron2021latent,vaevar2024}.
+
+\section{Conclusion}
+A Robust Temporal MVAE was evaluated for hidden-state reconstruction and short-horizon forecasting from noisy and incomplete multimodal observations of Lorenz--96. Against a corruption-matched Static MVAE, temporal context provides little benefit when the current $ABC$ observation is complete, but becomes increasingly valuable as information is removed. Temporal MSE reductions reach 31.15\% at 30\% missingness, 42.87\% at 50\% missingness, 5.76--50.35\% across two-modality subsets, and 32.02--40.89\% in single-modality conditions.
+
+A separate ablation shows that corruption-aware training is also essential for stable inference under severe missingness and modality dropout. Posterior sampling responds to information loss, but poor interval coverage and decreasing forecast dispersion reveal substantial overconfidence caused in part by deterministic latent propagation. The results therefore provide controlled evidence that subset-aware training and temporal context are complementary mechanisms for robust latent-state estimation, while stochastic transitions, calibration, stronger baselines, multiple-seed evaluation, and physically grounded observations remain necessary extensions.
+
+
+
+\section*{Data and Code Availability}
+The dataset used in this study is synthetically generated from Eq.~\eqref{eq:l96}; no proprietary experimental data are required. Source code and configuration files are intended to be made publicly available at: \texttt{https://github.com/NoumanUK}.
+
+
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\end{document}
